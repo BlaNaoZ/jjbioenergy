@@ -1,0 +1,9 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+    <article class="reference">
+        <h2>{{ reference.reference_number }}</h2>
+        <p>{{ reference.install_date }}</p>
+        <p>{{ reference.specification_of_equipment|linebreaksbr }}</p>
+    </article>
+{% endblock %}

@@ -6,14 +6,14 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django import forms
 
-SPEC_CHOICES = (
+'''SPEC_CHOICES = (
     ('cap', 'capacity'),
     ('hs', 'heat source'),
     ('hst', 'heat source temperature'),
     ('size', 'size'),
     ('w', 'weight'),
 )
-
+'''
 '''class ListTextWidget(forms.TextInput):
     def __init__(self, data_list, name, *args, **kwargs):
         super(ListTextWidget, self).__init__(*args, **kwargs)
@@ -33,21 +33,24 @@ SPEC_CHOICES = (
 
 
 class Reference(models.Model):
-    ref_nr = models.CharField(max_length=50)
-    equip_cat = models.CharField(max_length=20)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    reference_number = models.CharField(max_length=50)
+    equipment_category = models.CharField(max_length=20)
+    supplier = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     customer = models.CharField(max_length=50)
-    customer_product = models.CharField(max_length=50)
+    customer_product = models.CharField(max_length=100)
     install_date = models.DateField()
-    text = models.TextField()
-    spec_of_equip = models.CharField(max_length=200, choices=SPEC_CHOICES, null=True, blank=True)
+    specification_of_equipment = models.TextField()
+
+    '''
+     specification_of_equipment = models.CharField(max_length=200, choices=SPEC_CHOICES, null=True, blank=True)
+    '''
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.install_date = timezone.now()
         self.save()
 
     def __str__(self):
-        return self.ref_nr
+        return self.reference_number
 
 
 class Profile(models.Model):
