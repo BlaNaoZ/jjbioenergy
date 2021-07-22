@@ -3,9 +3,7 @@
 {% block content %}
     {% for reference in references %}
         <article class="reference">
-            <time class="date">
-                {{ reference.install_date }}
-            </time>
+            {{ reference.install_date }}
             <h2><a href="{% url 'reference_detail' pk=reference.pk %}">{{ reference.reference_number }}</a></h2>
             <p>{{ reference.specification_of_equipment|linebreaksbr }}</p>
         </article>

@@ -12,3 +12,13 @@ def reference_list(request):
 def reference_detail(request, pk):
     reference = get_object_or_404(Reference, pk=pk)
     return render(request, 'app/reference_detail.html', {'reference': reference})
+
+
+def category_list(request):
+    categories = Reference.objects.order_by('equipment_category')
+    return render(request, 'app/reference_list.html', {'categories': categories})
+
+
+def category_detail(request, pk):
+    category = get_object_or_404(Reference, pk)
+    return render(request, 'app/reference_detail.html', {'category': category})

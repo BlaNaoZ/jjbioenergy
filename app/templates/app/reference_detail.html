@@ -2,8 +2,13 @@
 
 {% block content %}
     <article class="reference">
-        <h2>{{ reference.reference_number }}</h2>
-        <p>{{ reference.install_date }}</p>
+        <h2>Reference Number: {{ reference.reference_number }}</h2>
+        <p>Equipment category: {{ reference.equipment_category }}</p>
+        <p>Supplier: {{ reference.supplier }}</p>
+        <p>Customer: {{ reference.customer }}</p>
+        <p>Customer product: {{ reference.customer_product }}</p>
+        <p>Installation date: {{ reference.install_date|date:"Y M" }}</p>
+        <p>Specification of equipment:</p>
         <p>{{ reference.specification_of_equipment|linebreaksbr }}</p>
     </article>
 {% endblock %}
