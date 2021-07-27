@@ -10,5 +10,12 @@
         <p>Installation date: {{ reference.install_date|date:"Y M" }}</p>
         <p>Specification of equipment:</p>
         <p>{{ reference.specification_of_equipment|linebreaksbr }}</p>
+        {% if user.is_authenticated %}
+        <aside class="actions">
+            <a class="btn btn-default" href="{% url 'reference_edit' pk=reference.pk %}">
+                {% include './icons/pencil-fill.svg' %}
+            </a>
+        </aside>
+        {% endif %}
     </article>
 {% endblock %}

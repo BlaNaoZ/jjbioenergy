@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 from django import forms
+from django.utils.datetime_safe import date
 
 '''SPEC_CHOICES = (
     ('cap', 'capacity'),
@@ -38,7 +39,7 @@ class Reference(models.Model):
     supplier = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     customer = models.CharField(max_length=50)
     customer_product = models.CharField(max_length=100)
-    install_date = models.DateField()
+    install_date = models.DateField(default=date.today)
     specification_of_equipment = models.TextField()
 
     '''
@@ -46,7 +47,6 @@ class Reference(models.Model):
     '''
 
     def publish(self):
-        self.install_date = timezone.now()
         self.save()
 
     def __str__(self):

@@ -6,4 +6,6 @@ from . import views
 urlpatterns = [
     path('', views.reference_list, name='reference_list'),
     path('reference/<int:pk>/', views.reference_detail, name='reference_detail'),
+    path('reference/new/', views.reference_new, name='reference_new'),
+    path('reference/<int:pk>/edit', views.reference_edit, name='reference_edit')
 ]
