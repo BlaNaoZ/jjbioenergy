@@ -1,5 +1,7 @@
 {% extends "base_generic.html" %}
 
+<!DOCTYPE html>
+
 {% block content %}
 
   {% if form.errors %}
@@ -14,22 +16,30 @@
       <p>Please login to see this page.</p>
     {% endif %}
   {% endif %}
-
-  <form method="post" action="{% url 'login' %}">
+  
+  <div class="login">
+    <div class="login-triangle"></div>
+    <h2 class="login-header">Log in</h2>
+  <form method="post" action="{% url 'login' %}" class="login-container">
     {% csrf_token %}
     <table>
-      <tr>
-        <td>{{ form.username.label_tag }}</td>
-        <td>{{ form.username }}</td>
-      </tr>
-      <tr>
-        <td>{{ form.password.label_tag }}</td>
-        <td>{{ form.password }}</td>
-      </tr>
+          <tr>
+            <div class="login-input-fields">
+            <td> {{ form.username.label_tag }}</td> 
+            <td> {{ form.username }}</td>
+            </div>
+          </tr>
+          <tr>
+            </div class="login-input_fields">
+            <td> {{ form.password.label_tag }}</td> 
+            <td> {{ form.password }}</td>
+            </div>
+          </tr>
     </table>
-    <input type="submit" value="login" />
+    <p> <input type="submit" value="Log in" /> </p>
     <input type="hidden" name="next" value="{{ next }}" />
   </form>
+  </div>
 
   {# Assumes you setup the password_reset view in your URLconf #}
   <p><a href="{% url 'password_reset' %}">Lost password?</a></p>

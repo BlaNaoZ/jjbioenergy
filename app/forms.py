@@ -11,7 +11,7 @@ class ReferenceForm(forms.ModelForm):
 
     class Meta:
         model = Reference
-        fields = ('equipment_category', 'customer', 'customer_product', 'install_date', 'specification_of_equipment',)
+        fields = ('customer', 'customer_product', 'install_date', 'specification_of_equipment',)
         widgets = {
             'install_date': DateInput()
         }
