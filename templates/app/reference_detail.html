@@ -1,8 +1,19 @@
-{% extends 'app/base.html' %}
+{% extends 'base/navbar.html' %}
 
 {% block content %}
     <article class="reference">
         <h2>Reference Number: {{ reference.reference_number }}</h2>
+        {% if fav %}
+        <div>
+          <a href="{% url 'favourite_add' id=reference.pk %}" class="">Remove
+            Favourites</a>
+        </div>
+        {% else %}
+        <div>
+          <a href="{% url 'favourite_add' id=reference.pk %}" class="">Add to
+            Favourites</a>
+        </div>
+        {% endif %}
         <p>Equipment category: {{ reference.equipment_category }}</p>
         <p>Customer: {{ reference.customer }}</p>
         <p>Customer product: {{ reference.customer_product }}</p>

@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+    <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="#">Features</a>
+    </nav>
+    {% if request.user.is_authenticated %}
+
+
+    <div class="dropdown">
+        <button class="dropbtn">Dropdown</button>
+        <div class="dropdown-content">
+          <a href="{% url 'profile' pk=request.user.pk %}">Profile</a>
+          <a href="{% url 'favourite_list' pk=request.user.pk %}">Favourites</a>
+          <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+    {% else %}
+    <nav>
+        <a class="p-2 text-dark" href="{% url "accounts:register" %}">Register</a>
+        <a class="p-2 text-dark" href="{% url "login" %}">Login</a>
+    </nav>
+    {% endif %}
+</div>

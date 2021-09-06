@@ -1,0 +1,9 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    {% for user in users %}
+        <article class="user">
+            <h2><a href="{% url 'profile' pk=user.pk %}">{{ user.email }}</a></h2>
+        </article>
+    {% endfor %}
+{% endblock %}

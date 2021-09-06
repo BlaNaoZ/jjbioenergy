@@ -14,9 +14,16 @@
                 <a href="{% url 'reference_new' %}" class="top-menu">
                     {% include './icons/file-earmark-plus.svg' %}
                 </a>
-                <a href="{% url 'logout' %}" class="top-menu"> Log out </a>
                 {% endif %}
                 <h1><a href="/">Reference</a></h1>
+                <div class="dropdown">
+                    <button class="dropbtn">User Settings</button>
+                    <div class="dropdown-content">
+                      <a href="{% url 'profile' pk=request.user.pk %}">Profile</a>
+                      <a href="{% url 'favourite_list' pk=request.user.pk %}">Favourites</a>
+                      <a href="{% url 'logout' %}">Logout</a>
+                    </div>
+                </div>
             </div>
         </header>
         <main class="content container">

@@ -84,8 +84,8 @@ class User(AbstractBaseUser):
     )
 
     user_type = models.CharField(max_length=25, choices=USER_CHOICES, default=HEAT_BUYER_CHOICE)
-
-    # notice the absence of a "Password field", that is built in.
+    
+    favourites = models.ManyToManyField("app.Reference", related_name='favorited_by')
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [] # Email & Password are required by default.
@@ -101,16 +101,6 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.email
-
-    def has_perm(self, perm, obj=None):
-        "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
-        return True
-
-    def has_module_perms(self, app_label):
-        "Does the user have permissions to view the app `app_label`?"
-        # Simplest possible answer: Yes, always
-        return True
 
     @property
     def is_staff(self):

@@ -1,4 +1,6 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.core.checks import messages
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
 from .forms import ReferenceForm
 from app.models import Reference
@@ -9,38 +11,53 @@ if not they're redirected to the login page.
 Work in progress. 
 """
 
-def check_user_authenticated(request):
-    if not request.user.is_authenticated:
-        return redirect('%s?next=%s' % ('accounts/login', request.path))
+def check_supplier(user):
+    return user.supplier_flag
 
+def check_foundation_industry(user):
+    return user.foundation_industry_flag
+
+def check_heat_buyer(user):
+    return user.heat_buyer_flag
+
+
+@login_required
+def favourite_add(request, id):
+    reference = get_object_or_404(Reference, pk=id)
+    if request.user.favourites.filter(id=reference.pk).exists():
+        request.user.favourites.remove(reference)
+    else:
+        request.user.favourites.add(reference)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+@login_required
 def reference_list(request):
-    if not request.user.is_authenticated:
-        return redirect('%s?next=%s' % ('accounts/login', request.path))
-    check_user_authenticated(request)
     references = Reference.objects.filter(install_date__lte=timezone.now()).order_by('-install_date')
     return render(request, 'app/reference_list.html', {'references': references})
 
-
+@login_required
 def reference_detail(request, pk):
-    check_user_authenticated(request)
     reference = get_object_or_404(Reference, pk=pk)
-    return render(request, 'app/reference_detail.html', {'reference': reference})
 
+    fav = bool
 
+    if request.user.favourites.filter(pk=reference.pk).exists():
+        fav = True
+
+    return render(request, 'app/reference_detail.html', {'reference': reference, 'fav': fav})
+
+@login_required
 def category_list(request):
-    check_user_authenticated(request)
     categories = Reference.objects.order_by('equipment_category')
     return render(request, 'app/reference_list.html', {'categories': categories})
 
-
+@login_required
 def category_detail(request, pk):
-    check_user_authenticated(request)
     category = get_object_or_404(Reference, pk)
     return render(request, 'app/reference_detail.html', {'category': category})
 
-
+@login_required
 def reference_new(request):
-    check_user_authenticated(request)
     if request.method == "POST":
         form = ReferenceForm(request.POST)
         if form.is_valid():
@@ -58,9 +75,8 @@ def reference_new(request):
         form = ReferenceForm()
     return render(request, 'app/reference_edit.html', {'form': form})
 
-
+@login_required
 def reference_edit(request, pk):
-    check_user_authenticated(request)
     reference = get_object_or_404(Reference, pk=pk)
     if request.method == "POST":
         form = ReferenceForm(request.POST, instance=reference)

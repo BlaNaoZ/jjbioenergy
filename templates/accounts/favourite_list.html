@@ -1,0 +1,13 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    {% for reference in references %}
+        {% if reference in favourites %}
+            <article class="reference">
+                {{ reference.install_date }}
+                <h2><a href="{% url 'reference_detail' pk=reference.pk %}">{{ reference.reference_number }}</a></h2>
+                <p>{{ reference.specification_of_equipment|linebreaksbr }}</p>
+            </article>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

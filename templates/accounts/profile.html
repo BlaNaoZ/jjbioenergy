@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <article class="user">
+        <p> Email: {{ user.email }} </p>
+        {% if user.supplier_flag %}
+            <p> Company name: {{ user.supplier.name }} </p>
+            <p> Company website: {{ user.supplier.website }} </p>
+            <p> Level one: {{ user.supplier.level_one }} </p>
+            <p> Level two: {{ user.supplier.level_two }} </p>
+        {% elif user.foundation_industry_flag %}
+            <p> Company name: {{ user.foundationindustry.name }} </p>
+            <p> Level one: {{ user.foundationindustry.level_one }} </p>
+            <p> Level two: {{ user.foundationindustry.level_two }} </p>
+        {% elif user.heat_buyer_flag %}
+            <p> Company name: {{ user.heat_buyer.name }} </p>
+            <p> Level one: {{ user.heat_buyer.level_one }} </p>
+            <p> Level two: {{ user.heat_buyer.level_two }} </p>
+        {% endif %}
+    </article>
+{% endblock %}

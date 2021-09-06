@@ -122,14 +122,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-"""
-Used for multiple static folders (app, registration, accounts)
-"""
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    '/app/static',
-    'accounts/static'
 ]
+
+
