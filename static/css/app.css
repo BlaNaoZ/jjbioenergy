@@ -59,9 +59,9 @@ h4 {
 
 .btn-default,
 .btn-default:visited {
-    color: #C25100;
+    color: #f3f3f3;
     background: none;
-    border-color: #C25100;
+    border-color: #534a44;
 }
 
 .btn-default:hover {
@@ -71,9 +71,9 @@ h4 {
 
 /* Dropdown Button */
 .dropbtn {
-    background-color: #04AA6D;
+    background-color: #b6b6b6;
     color: white;
-    padding: 16px;
+    padding: 14px 32px;
     font-size: 16px;
     border: none;
 }
@@ -92,6 +92,7 @@ h4 {
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+    right: 0;
 }
   
   /* Links inside the dropdown */
@@ -109,4 +110,4 @@ h4 {
 .dropdown:hover .dropdown-content {display: block;}
   
   /* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
+.dropdown:hover .dropbtn {background-color: #444644;}

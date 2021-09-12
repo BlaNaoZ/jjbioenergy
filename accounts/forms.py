@@ -20,7 +20,7 @@ class UserAdminCreationForm(forms.ModelForm):
         
     class Meta:
         model = User
-        fields = ['email', 'user_type']
+        fields = ['name', 'email', 'user_type']
 
     def clean(self):
         '''
@@ -65,7 +65,7 @@ class UserAdminChangeForm(forms.ModelForm):
     password = ReadOnlyPasswordHashField()
     class Meta:
         model = User
-        fields = ['user_type', 'email', 'password', 'is_active']
+        fields = ['name', 'user_type', 'email', 'password', 'is_active']
     
 
     def clean_password(self):

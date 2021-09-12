@@ -1,8 +1,9 @@
-{% extends 'base/navbar.html' %}
+{% extends 'base/base.html' %}
 
 {% block content %}
     <article class="reference">
         <h2>Reference Number: {{ reference.reference_number }}</h2>
+        
         {% if fav %}
         <div>
           <a href="{% url 'favourite_add' id=reference.pk %}" class="">Remove
@@ -14,13 +15,15 @@
             Favourites</a>
         </div>
         {% endif %}
+
+        <p>Supplier: {{ reference.supplier }} </p>
         <p>Equipment category: {{ reference.equipment_category }}</p>
         <p>Customer: {{ reference.customer }}</p>
         <p>Customer product: {{ reference.customer_product }}</p>
         <p>Installation date: {{ reference.install_date|date:"Y M" }}</p>
         <p>Specification of equipment:</p>
         <p>{{ reference.specification_of_equipment|linebreaksbr }}</p>
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and editable %}
         <aside class="actions">
             <a class="btn btn-default" href="{% url 'reference_edit' pk=reference.pk %}">
                 {% include './icons/pencil-fill.svg' %}

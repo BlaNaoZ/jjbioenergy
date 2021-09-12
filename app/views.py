@@ -5,20 +5,24 @@ from django.utils import timezone
 from .forms import ReferenceForm
 from app.models import Reference
 
-""" 
-Used to check if user is authenticated before they can view any page, 
-if not they're redirected to the login page.
-Work in progress. 
-"""
-
-def check_supplier(user):
-    return user.supplier_flag
-
-def check_foundation_industry(user):
-    return user.foundation_industry_flag
-
-def check_heat_buyer(user):
-    return user.heat_buyer_flag
+#Used to check if the user has the permission to edit a reference.
+def can_edit_reference(user, reference):
+    if user.supplier_flag:
+        if user == reference.supplier:
+            return True
+        return False
+    elif user.foundation_industry_flag:
+        if user == reference.customer:
+            return True
+        return False
+    elif user.heat_buyer_flag:
+        if user == reference.customer:
+            return True
+        return False
+    elif user.admin:
+        return True
+    else:
+        return False
 
 
 @login_required
@@ -44,7 +48,9 @@ def reference_detail(request, pk):
     if request.user.favourites.filter(pk=reference.pk).exists():
         fav = True
 
-    return render(request, 'app/reference_detail.html', {'reference': reference, 'fav': fav})
+    can_edit = can_edit_reference(user=request.user, reference=reference)
+
+    return render(request, 'app/reference_detail.html', {'reference': reference, 'fav': fav, 'editable': can_edit})
 
 @login_required
 def category_list(request):
@@ -65,9 +71,15 @@ def reference_new(request):
             Here some Reference fields are initialised using the User's (the one creating the reference) fields.
             """
             reference = form.save(commit=False)
-            reference.supplier = request.user.supplier 
+            reference.supplier = request.user
             reference.equipment_category = request.user.supplier.level_one
             reference.save()
+            
+            if reference.customer.heat_buyer_flag:
+                reference.customer_product = reference.customer.heatbuyer.level_two
+            else:
+                reference.customer_product = reference.customer.foundationindustry.level_two
+
             reference.reference_number = 'ref-' + str(reference.equipment_category) + '-' + str(reference.pk)
             reference.save()
             return redirect('reference_detail', pk=reference.pk)
@@ -78,11 +90,13 @@ def reference_new(request):
 @login_required
 def reference_edit(request, pk):
     reference = get_object_or_404(Reference, pk=pk)
+    if not can_edit_reference(user=request.user, reference=reference):
+        return redirect('error/500.html')
     if request.method == "POST":
         form = ReferenceForm(request.POST, instance=reference)
         if form.is_valid():
             reference = form.save(commit=False)
-            reference.supplier = request.user.supplier
+            reference.supplier = request.user
             reference.save()
             reference.reference_number = 'ref-' + str(reference.equipment_category) + '-' + str(reference.pk)
             reference.save()
@@ -90,3 +104,21 @@ def reference_edit(request, pk):
     else:
         form = ReferenceForm(instance=reference)
     return render(request, 'app/reference_edit.html', {'form': form})
+
+
+#Error handling custom views.
+def error_404(request, exception):
+        data = {}
+        return render(request,'errors/404.html', data)
+
+def error_500(request):
+        data = {}
+        return render(request,'errors/500.html', data)
+
+def error_403(request, exception):
+        data = {}
+        return render(request,'errors/403.html', data)
+
+def error_400(request, exception):
+        data = {}
+        return render(request,'errors/400.html', data)

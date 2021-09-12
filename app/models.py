@@ -36,8 +36,8 @@ from django.utils.datetime_safe import date
 
 class Reference(models.Model):
     reference_number = models.CharField(max_length=50)
-    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE) #Returns the name field of the Supplier instance
-    customer = models.CharField(max_length=50)
+    supplier = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, limit_choices_to={'supplier_flag': True}, related_name="Supplier") #Returns the name field of the Supplier instance
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, limit_choices_to={'supplier_flag': False, 'admin': False}, related_name="Customer")
 
     STEAM_POWER_CHOICE = 'Steam Power Gen'
     ORC_CHOICE = 'ORC'
@@ -48,7 +48,20 @@ class Reference(models.Model):
     )
 
     equipment_category = models.CharField(max_length=20, choices=EQUIPMENT_CATEGORY_CHOICES, default=STEAM_POWER_CHOICE)
-    customer_product = models.CharField(max_length=100)
+
+    STAINLESS_STEEL_CHOICE = 'Stainless steel'
+    ALLUMINIUM_CHOICE = 'Alluminium'
+    HOTEL_CHOICE = 'Hotel'
+    SUPERMARKET_CHOICE = 'Supermarket'
+
+    CUSTOMER_PRODUCT_CHOICES = (
+        (HOTEL_CHOICE, 'Hotel'),
+        (SUPERMARKET_CHOICE, 'Supermarket'),
+        (STAINLESS_STEEL_CHOICE, 'Stainless steel'),
+        (ALLUMINIUM_CHOICE, 'Alluminium'),
+    )
+
+    customer_product = models.CharField(max_length=20, choices=CUSTOMER_PRODUCT_CHOICES, default=STAINLESS_STEEL_CHOICE)
     install_date = models.DateField(default=date.today)
     specification_of_equipment = models.TextField()
 

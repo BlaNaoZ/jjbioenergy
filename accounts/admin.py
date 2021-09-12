@@ -35,7 +35,7 @@ class UserAdmin(BaseUserAdmin):
     The fields to be shown on the UserAdmin page.
     """
     fieldsets = (
-                (None, {'fields': ('email', )}),
+                (None, {'fields': ('name', 'email', )}),
                 ('Permissions', {'fields': ('admin', )}),
     )
     
@@ -45,7 +45,7 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password', 'password_2', 'user_type')}
+            'fields': ('name', 'email', 'password', 'password_2', 'user_type')}
         ),
     )
     search_fields = ['email']
@@ -61,48 +61,45 @@ Classes used for adding admin pages for each user type (Heat Buyer, Foundation I
 """
 class FoundationAdmin(admin.ModelAdmin):
     
-    list_display = ['user', 'name']
-    add_fieldsets = ['name']
+    list_display = ['user']
     fieldsets = (
-                ('Details', {'fields': ('name', 'user', 'level_one', 'level_two')}),
+                ('Details', {'fields': ('user', 'level_one', 'level_two')}),
     )
     add_fieldsets = (
         (None, {
-            'fields': ('name', 'user')
+            'fields': ('user')
         }),
     )
 
-    ordering = ['name']
+    ordering = ['user']
 
 class HeatAdmin(admin.ModelAdmin):
     
-    list_display = ['user', 'name']
-    add_fieldsets = ['name']
+    list_display = ['user']
     fieldsets = (
-                ('Details', {'fields': ('name', 'user', 'level_one', 'level_two')}),
+                ('Details', {'fields': ('user', 'level_one', 'level_two')}),
     )
     add_fieldsets = (
         (None, {
-            'fields': ('name', 'user')
+            'fields': ('user')
         }),
     )
 
-    ordering = ['name']
+    ordering = ['user']
 
 class SupplierAdmin(admin.ModelAdmin):
     
-    list_display = ['user', 'name']
-    add_fieldsets = ['name']
+    list_display = ['user']
     fieldsets = (
-                ('Details', {'fields': ('name', 'user', 'website', 'level_one', 'level_two')}),
+                ('Details', {'fields': ('user', 'website', 'level_one', 'level_two')}),
     )
     add_fieldsets = (
         (None, {
-            'fields': ('name', 'user')
+            'fields': ('user')
         }),
     )
 
-    ordering = ['name']
+    ordering = ['user']
 
 admin.site.register(FoundationIndustry, FoundationAdmin)
 admin.site.register(Supplier, SupplierAdmin)

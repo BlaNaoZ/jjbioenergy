@@ -66,6 +66,8 @@ class User(AbstractBaseUser):
     heat_buyer_flag = models.BooleanField(default=False)
     foundation_industry_flag = models.BooleanField(default=False) # a admin user; non super-user
 
+    name = models.CharField(max_length=200)
+
     ADMIN_CHOICE = 'Admin'
     SUPPLIER_CHOICE = 'Supplier'
     HEAT_BUYER_CHOICE = 'Heat Buyer'
@@ -100,7 +102,11 @@ class User(AbstractBaseUser):
         return self.email
 
     def __str__(self):
-        return self.email
+        return self.name
+
+    def has_perm(self, perm, obj=None): return self.admin
+
+    def has_module_perms(self, app_label): return self.admin
 
     @property
     def is_staff(self):
@@ -120,7 +126,6 @@ class FoundationIndustry(models.Model):
     FoundationIndustry is a subclass of the User class.
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    name = models.CharField(max_length=200)
 
     METAL_CHOICE = 'Metal'
     CERAMICS_CHOICE = 'Ceramics'
@@ -154,14 +159,10 @@ class FoundationIndustry(models.Model):
     """
     class Meta:
         verbose_name_plural = "Foundation Industries"
-    
-    def __str__(self):
-        return self.name
 
 
 class HeatBuyer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    name = models.CharField(max_length=100)
 
     DHN_CHOICE = 'DHN'
     INDUSTRY_CHOICE = 'Industry'
@@ -189,12 +190,8 @@ class HeatBuyer(models.Model):
     class Meta:
         verbose_name_plural = "Heat Buyers"
 
-    def __str__(self):
-        return self.name
-
 class Supplier(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    name = models.CharField(max_length=200)
     
     POWER_GEN_CHOICE = 'Power Gen'
     HEAT_EXCHANGE_CHOICE = 'Heat Exchange'
@@ -220,6 +217,3 @@ class Supplier(models.Model):
     level_two = models.CharField(max_length=20, choices=LEVEL_TWO_CHOICES, default=STEAM_POWER_CHOICE)
 
     website = models.URLField(max_length=100, default="None")
-
-    def __str__(self):
-        return self.name

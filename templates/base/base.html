@@ -16,13 +16,13 @@
                 </a>
                 {% endif %}
                 <h1><a href="/">Reference</a></h1>
-                <div class="dropdown">
-                    <button class="dropbtn">User Settings</button>
-                    <div class="dropdown-content">
-                      <a href="{% url 'profile' pk=request.user.pk %}">Profile</a>
-                      <a href="{% url 'favourite_list' pk=request.user.pk %}">Favourites</a>
-                      <a href="{% url 'logout' %}">Logout</a>
-                    </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">User Settings</button>
+                <div class="dropdown-content">
+                  <a href="{% url 'profile' pk=request.user.pk %}">Profile</a>
+                  <a href="{% url 'favourite_list' pk=request.user.pk %}">Favourites</a>
+                  <a href="{% url 'logout' %}">Logout</a>
                 </div>
             </div>
         </header>
